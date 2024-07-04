@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 class Node
 {
 public:
@@ -14,7 +16,6 @@ public:
         Three = 3,
         Four = 4,
         Mine = 9
-
     };
 
     NodeType value;

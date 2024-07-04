@@ -8,23 +8,32 @@
 
 int main()
 {
-  string inputRowCol;
-  int numberOfMines;
-  cout << "Enter number of rows and cols separated by ',':" << endl;
-  cin >> inputRowCol;
-  cout << "Enter number of mines to be placed:" << endl;
-  cin >> numberOfMines;
-  pair<int, int> rowCol;
   try
   {
-    rowCol = Utility::getRowCol(Utility::splitStrOn(inputRowCol, ','));
-    int rows = rowCol.first;
-    int cols = rowCol.second;
-    Utility::validateMines(numberOfMines, rows, cols);
-    Grid mineGrid = Grid(rows, cols, numberOfMines);
-    mineGrid.initGrid();
-    mineGrid.show();
+    vector<vector<int>> gridInput = Utility::readCsvFromStdin<int>('\n', ',');
+    Grid *mineGrid = nullptr;
+    int rows, cols, numberOfMines;
+    if (gridInput.empty())
+    {
+      string inputRowCol;
+      cout << "Enter number of rows and cols separated by ',':" << endl;
+      cin >> inputRowCol;
+      cout << "Enter number of mines to be placed:" << endl;
+      cin >> numberOfMines;
+      pair<int, int> rowCol = Utility::getRowCol(Utility::splitStrOn(inputRowCol, ','));
+      rows = rowCol.first;
+      cols = rowCol.second;
+      mineGrid = new Grid(rows, cols, numberOfMines);
+      Utility::validateMines(numberOfMines, rows, cols);
+    }
+    else
+    {
+      throw runtime_error("TODO: validate and setup grid using grid file input");
+    }
+
     Game minesweeper = Game(mineGrid);
+    minesweeper.mineGrid->initGrid();
+    minesweeper.mineGrid->show();
   }
   catch (const std::exception &e)
   {

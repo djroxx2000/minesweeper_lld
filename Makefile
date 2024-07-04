@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -I.
+CFLAGS = -I. -std=c++17
 DEPS = Utility.hpp Grid.hpp
 
 %.o: %.cpp $(DEPS)
@@ -13,3 +13,5 @@ minesweeper: minesweeper.o Utility.o Grid.o
 clean:
 	del *.o *.exe
 
+maclean:
+	rm *.o minesweeper

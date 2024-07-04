@@ -24,10 +24,10 @@ public:
         LOST,
         WON
     };
-    Grid mineGrid;
+    Grid* mineGrid;
     GameState state;
 
-    Game(Grid inputGrid) : mineGrid(inputGrid), state(INITIALIZED){};
+    Game(Grid* inputGrid) : mineGrid(inputGrid), state(INITIALIZED){};
 
     void playMove(int row, int col)
     {
@@ -53,14 +53,14 @@ public:
 
     MoveValidity isValidMove(int row, int col)
     {
-        if (mineGrid.grid[row][col]->isVisible)
+        if (mineGrid->grid[row][col]->isVisible)
         {
             return MoveValidity::NODE_ALREADY_VISIBLE;
         }
         if (
-            row >= mineGrid.rows ||
+            row >= mineGrid->rows ||
             row < 0 ||
-            col >= mineGrid.cols ||
+            col >= mineGrid->cols ||
             col < 0)
         {
             return MoveValidity::NODE_OUT_OF_BOUNDS;
@@ -70,7 +70,7 @@ public:
 
     bool isSafeMove(int row, int col)
     {
-        if (mineGrid.grid[row][col]->value != Node::Mine)
+        if (mineGrid->grid[row][col]->value != Node::Mine)
         {
             return false;
         }

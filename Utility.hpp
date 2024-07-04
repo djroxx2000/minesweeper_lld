@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <fstream>
+#include <type_traits>
 
 using namespace std;
 
@@ -69,6 +71,39 @@ public:
       series += ch;
     }
     return series;
+  }
+
+  template<typename T>
+  static vector<vector<T>> readCsvFromStdin(char lineDelimiter, char dataDelimiter)
+  {
+    vector<vector<T>> csvOut;
+    stringstream ss;
+    ifstream inputStream("./inputGrid.txt");
+    if (!inputStream)
+    {
+      cerr << "Unable to read grid from file. Switching to user input...";
+      return csvOut;
+    }
+    string curLine;
+    while (getline(inputStream, curLine, lineDelimiter))
+    {
+      ss << curLine;
+      string dataString;
+      csvOut.push_back(vector<T>());
+      while (getline(ss, dataString, dataDelimiter))
+      {
+        T dataPoint;
+        if constexpr (is_integral_v<T>) {
+          dataPoint = stoi(dataString);
+        } else if (is_floating_point_v<T>) {
+          dataPoint = stof(dataString);
+        } else {
+          dataPoint = static_cast<T>(dataString);
+        }
+        csvOut[csvOut.size() - 1].push_back(dataPoint);
+      }
+    }
+    return csvOut;
   }
 };
 
